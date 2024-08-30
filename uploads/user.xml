@@ -1,0 +1,26 @@
+<users>
+    <user>
+        <id>1</id>
+        <name>John Doe</name>
+        <phone>1234567890</phone>
+        <address>123 Street</address>
+    </user>
+    <user>
+        <id>2</id>
+        <name>Jane Doe</name>
+        <phone>0987654321</phone>
+        <address>456 Avenue</address>
+    </user>
+    <user>
+        <id>3</id>
+        <name>Abc dummy</name>
+        <phone>0987654321</phone>
+        <address>456 WAC Abc dummy</address>
+    </user>
+    <user>
+        <id>4</id>
+        <name>Test Demo</name>
+        <phone>0987654321</phone>
+        <address>456 NQR Test Demo</address>
+    </user>
+</users>

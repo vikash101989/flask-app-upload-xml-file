@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Status</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Job Status</h1>
+    <p>Job ID: {{ job.id }}</p>
+    <p>Status: <span id="status">{{ job.status }}</span></p>
+    <button id="viewButton" style="display:none;" onclick="showData()">View Data</button>
+    <div id="result" style="display:none;">
+        <h2>Extracted Data</h2>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Address</th>
+                </tr>
+            </thead>
+            <tbody id="data"></tbody>
+        </table>
+    </div>
+
+    
+
+    <script>
+        function checkJobStatus() {
+            $.getJSON("{{ url_for('job_status', job_id=job.id) }}", function(response) {
+                $("#status").text(response.status);
+                if (response.status === 'Completed') {
+                    $("#viewButton").show();
+                } else if (response.status.startsWith('Failed')) {
+                    alert('Job failed: ' + response.status);
+                } else {
+                    setTimeout(checkJobStatus, 5000);  // Poll every 2 seconds
+                }
+            });
+        }
+
+        function showData() {
+            $.getJSON("{{ url_for('job_status', job_id=job.id) }}", function(response) {
+                if (response.status === 'Completed') {
+                    $("#result").show();
+                    var dataHtml = '';
+                    response.data.forEach(function(user) {
+                        dataHtml += '<tr><td>' + user.id + '</td><td>' + user.name + '</td><td>' + user.phone + '</td><td>' + user.address + '</td></tr>';
+                    });
+                    $("#data").html(dataHtml);
+                }
+            });
+        }
+
+        $(document).ready(function() {
+            checkJobStatus();  // Start polling when page loads
+        });
+    </script>
+</body>
+</html>
